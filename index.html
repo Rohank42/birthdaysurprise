@@ -5,15 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday</title>
     <style>
-        /* CSS Improvements with variables */
-        :root {
-            --background-color: #ffe4e1;
-            --primary-color: #d63384;
-            --button-gradient: linear-gradient(135deg, #ff6699, #ff3366);
-            --button-hover-gradient: linear-gradient(135deg, #ff3366, #cc0055);
-        }
         body {
-            background-color: var(--background-color);
+            background-color: #ffe4e1;
             font-family: 'Dancing Script', cursive;
             text-align: center;
             overflow-y: auto;
@@ -25,7 +18,7 @@
         }
         .title {
             font-size: 3em;
-            color: var(--primary-color);
+            color: #d63384;
         }
         .section {
             margin: 20px auto;
@@ -60,11 +53,8 @@
             border-radius: 50%;
             animation: sparkle 1.5s infinite;
         }
-        .music-player {
-            margin-top: 15px;
-        }
         button {
-            background: var(--button-gradient);
+            background: linear-gradient(135deg, #ff6699, #ff3366);
             border: none;
             color: white;
             padding: 10px 20px;
@@ -76,7 +66,7 @@
             box-shadow: 0 4px 10px rgba(255, 51, 102, 0.3);
         }
         button:hover {
-            background: var(--button-hover-gradient);
+            background: linear-gradient(135deg, #ff3366, #cc0055);
             transform: scale(1.1);
             box-shadow: 0 6px 15px rgba(255, 51, 102, 0.5);
         }
@@ -91,26 +81,24 @@
         </div>
         <div id="cake" class="section">
             <h2>Light the Cake</h2>
-            <button onclick="lightCandle()" aria-label="Light the Birthday Candle">Light Candle</button>
+            <button onclick="lightCandle()">Light Candle</button>
             <div id="candle" class="candle"></div>
         </div>
         <div id="wish" class="section">
             <h2>Make a Wish</h2>
             <button onclick="showWishInput()">Make a Wish</button>
             <div id="wishBox" class="hidden">
-                <form id="wishForm" action="https://script.google.com/macros/s/AKfycbx3yZ_LRK9CJ4JWDuVc3_SXzr5M029Rpt8etKXwK6m6K-KLdyq99WQECF1MM_Hxc1km/exec" method="post">
-                    <input type="text" id="wishInput" name="wishColumn" placeholder="Enter your wish here...">
-                    <button type="submit" id="submitWish">Submit Wish</button>
-                </form>
+                <input type="text" id="wishInput" placeholder="Enter your wish here...">
+                <button onclick="makeWish()">Submit Wish</button>
             </div>
             <p id="wishMessage" class="hidden"></p>
         </div>
         <div id="music" class="section">
             <h2>Favorite Music</h2>
             <p>Enjoy the playlist of favorite songs.</p>
-            <audio class="music-player" controls aria-label="Birthday Music Player">
+            <audio class="music-player" controls>
                 <source src="your-song.mp3" type="audio/mp3">
-                Your browser does not support the audio element. Please enjoy music elsewhere!
+                Your browser does not support the audio element.
             </audio>
         </div>
         <div id="note" class="section">
@@ -119,82 +107,74 @@
             <p id="hiddenNote" class="hidden">You are loved and cherished more than words can express!</p>
         </div>
     </div>
-
-    <script>
-        let isCandleLit = false;
-    
-        // Function to light the candle
+    <script type="module">
         function lightCandle() {
-            const candle = document.getElementById("candle");
-            if (!isCandleLit) {
-                candle.style.background = "yellow";
-                isCandleLit = true;
-            } else {
-                alert("The candle is already lit!");
-            }
+            document.getElementById("candle").style.background = "yellow";
         }
-    
-        // Function to show the input box for making a wish
         function showWishInput() {
             document.getElementById("wishBox").classList.remove("hidden");
         }
-    
-        // Function to reveal the special note
-        function revealNote() {
-            document.getElementById("hiddenNote").classList.remove("hidden");
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUljKJMWh1n2n_r3YdzfoC5Fxv0hHyiHI",
+            authDomain: "birthdaywish-1bcba.firebaseapp.com",
+            projectId: "birthdaywish-1bcba",
+            storageBucket: "birthdaywish-1bcba.firebasestorage.app",
+            messagingSenderId: "161371802424",
+            appId: "1:161371802424:web:c275e4d76f964ee712cfcd",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function saveWish(wishText) {
+            try {
+                await addDoc(collection(db, "wishes"), { wish: wishText, timestamp: new Date() });
+                document.getElementById("wishMessage").innerText = `Your wish is in the stars!`;
+                document.getElementById("wishMessage").classList.remove("hidden");
+                
+            } catch (error) {
+                console.error("Error saving wish:", error);
+            }
         }
-    
-        // Function to handle wish submission
-        async function submitWish(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const wishInput = document.getElementById("wishInput").value;
-            const wishMessage = document.getElementById("wishMessage");
-            const form = document.getElementById("wishForm");
-    
-            if (wishInput.trim() !== "") {
-                try {
-                    const response = await fetch(form.action, {
-                        method: form.method,
-                        headers: {
-                            'Content-Type': 'application/json' // Tell the server we're sending JSON
-                        },
-                        body: JSON.stringify({ "Wish input": wishInput }), // Send the data as JSON
-                    });
-                    const data = await response.json();
-                    if (data.result === "Success") {
-                        wishMessage.textContent = `Your wish: "${wishInput}" is in the stars!`;
-                        wishMessage.classList.remove("hidden");
-                        document.getElementById("wishBox").classList.add("hidden");
-                        form.reset(); // Clear the form
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    wishMessage.textContent = "An error occurred. Please try again.";
-                    wishMessage.classList.remove("hidden");
-                }
+
+        window.showWishInput = function() {
+            document.getElementById("wishBox").classList.remove("hidden");
+        }
+
+        window.makeWish = function() {
+            let wishText = document.getElementById("wishInput").value;
+            if (wishText.trim() !== "") {
+                saveWish(wishText);
             } else {
                 alert("Please enter a wish!");
             }
         }
-    
-        // Attach the submit function to the form
-        document.getElementById("wishForm").addEventListener("submit", submitWish);
-    
-        // Function to create sparkles
-        function createSparkles() {
-            const fragment = document.createDocumentFragment();
-            for (let i = 0; i < 50; i++) {
-                const sparkle = document.createElement("div");
-                sparkle.className = "sparkles";
-                sparkle.style.top = `${Math.random() * window.innerHeight}px`;
-                sparkle.style.left = `${Math.random() * window.innerWidth}px`;
-                sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
-                fragment.appendChild(sparkle);
+        function makeWish() {
+            let wishText = document.getElementById("wishInput").value;
+            let wishMessage = document.getElementById("wishMessage");
+            if (wishText.trim() !== "") {
+                wishMessage.innerHTML = `Your wish is in the stars!`;
+                wishMessage.classList.remove("hidden");
+            } else {
+                alert("Please enter a wish!");
             }
-            document.body.appendChild(fragment);
         }
-    
-        // Create sparkles on page load
+        function revealNote() {
+            document.getElementById("hiddenNote").classList.remove("hidden");
+        }
+        function createSparkles() {
+            for (let i = 0; i < 50; i++) {
+                let sparkle = document.createElement("div");
+                sparkle.className = "sparkles";
+                sparkle.style.top = Math.random() * window.innerHeight + "px";
+                sparkle.style.left = Math.random() * window.innerWidth + "px";
+                sparkle.style.animationDuration = (Math.random() * 2 + 1) + "s";
+                document.body.appendChild(sparkle);
+            }
+        }
         createSparkles();
     </script>
 </body>
