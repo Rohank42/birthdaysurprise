@@ -107,10 +107,13 @@
             <p id="hiddenNote" class="hidden">You are loved and cherished more than words can express!</p>
         </div>
     </div>
-    <script type="module">
-        function lightCandle() {
+    <script>
+        window.lightCandle = function() {
             document.getElementById("candle").style.background = "yellow";
-        }
+        };
+    </script>
+    
+    <script type="module">
         function showWishInput() {
             document.getElementById("wishBox").classList.remove("hidden");
         }
@@ -162,20 +165,37 @@
                 alert("Please enter a wish!");
             }
         }
-        function revealNote() {
+        window.revealNote = function() {
             document.getElementById("hiddenNote").classList.remove("hidden");
-        }
+        };
+        
         function createSparkles() {
-            for (let i = 0; i < 50; i++) {
+            // Remove existing sparkles
+            document.querySelectorAll(".sparkles").forEach(sparkle => sparkle.remove());
+        
+            // Get the full scrollable height
+            let pageHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+            
+            // Adjust number of sparkles based on page size
+            let numSparkles = Math.floor((window.innerWidth * pageHeight) / 20000); // Adjust density
+        
+            for (let i = 0; i < numSparkles; i++) {
                 let sparkle = document.createElement("div");
                 sparkle.className = "sparkles";
-                sparkle.style.top = Math.random() * window.innerHeight + "px";
+                sparkle.style.position = "absolute";
+                sparkle.style.top = Math.random() * pageHeight + "px"; // Cover full height
                 sparkle.style.left = Math.random() * window.innerWidth + "px";
                 sparkle.style.animationDuration = (Math.random() * 2 + 1) + "s";
                 document.body.appendChild(sparkle);
             }
         }
+        
+        // Generate sparkles initially
         createSparkles();
+        
+        // Regenerate sparkles on window resize
+        window.addEventListener("resize", createSparkles);
+        
     </script>
 </body>
 </html>
