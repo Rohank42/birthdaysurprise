@@ -1,77 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Countdown to Birthday</title>
-  <style>
-    body {
-      background-color: #ffe4e1;
-      font-family: 'Dancing Script', cursive;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      font-size: 3em;
-      color: #d63384;
-      margin-bottom: 20px;
-    }
-    #countdown {
-      font-size: 2em;
-      color: #ff3366;
-      margin-bottom: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    .sparkles {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: #ff69b4;
-      border-radius: 50%;
-      animation: sparkle 1.5s infinite;
-    }
-    @keyframes sparkle {
-      0% { opacity: 0.5; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(-10px); }
-      100% { opacity: 0.5; transform: translateY(0); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happiest Birthday!!!</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <h1>Countdown to Birthday</h1>
-  <div id="countdown"></div>
-  <h1 id="birthdayMessage" class="hidden">Happy Birthday!</h1>
 
-  <script>
-    function updateCountdown() {
-      const now = new Date();
-      const target = new Date('2025-06-01T00:00:00+05:30'); // 1st June, 12:00 AM IST
+    
 
-      const distance = target.getTime() - now.getTime();
+<div id="timer" class="timer">
+    <h2 class="countdown-title"></h2>
+</div>
+    <div id="mainContent" class="hidden">
+    <div class="container">
 
-      if (distance <= 0) {
-        document.getElementById('countdown').classList.add('hidden');
-        document.getElementById('birthdayMessage').classList.remove('hidden');
-        return;
-      }
+    <div class="container">
+    <p id="timer" style="font-size: 1.5em; color: #ff3366;"></p>
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    <div class="container">
+        <header id="header">
+            <h1>Happiest Birthday!!!!</h1>
+            <p class="subtitle">Hope you like this!!! Been working on this for quite some time now!!!!!!!</p>
+        </header>
+        
+        <section class="section" id="heartfelt-note">
+            <div class="note-container">
+                <div class="note-content">
+                    <p>Dear,</p>
+                    <p>Hope you like this. This was supposed to be a surprise but i had to let you know!!! I wanted to stop this little project but someone told me it would make you happy, here we go!!! Ohh I am so nervous!!!</p>
+                </div>
+                <div class="note-signature">Rohan</div>
+            </div>
+        </section>
 
-      document.getElementById("countdown").innerHTML =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
+                <section class="section" id="memories">
+            <h2 class="section-title">My Favorite Memories</h2>
+                <div class="memory-card">
+                    <img src="adv.jpg" alt="Memory 2" class="memory-img">
+                    <div class="memory-caption">
+                        <h3>Our Trip!!!</h3>
+                        <p>Our adventurous getaway</p>
+                    </div>
+                </div>
 
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-  </script>
+<div class="memory-card">
+    <video class="memory-video" controls>
+        <source src="ramen.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="memory-caption">
+        <h3>Ramen!!!</h3>
+        <p>The day we first met</p>
+    </div>
+</div>
+
+
+                <div class="memory-card">
+                    <img src="fav.jpg" alt="Memory 3" class="memory-img">
+                    <div class="memory-caption">
+                        <h3>My Fav!!</h3>
+                        <p></p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+     
+
+        <section class="section" id="cake-section">
+            <h2 class="section-title">Let's Celebrate!</h2>
+            <div class="cake-container">
+                <div class="cake" id="cake">
+                    <div class="candle"></div>
+                    <div class="flame" id="flame"></div>
+                </div>
+                <div class="cake-plate"></div>
+                <button class="btn" id="light-btn">Light the Candle</button>
+                <button class="btn" id="cut-btn">Cut the Cake</button>
+            </div>
+        </section>
+        
+        <section class="section" id="wish">
+            <h2 class="section-title">Make a Birthday Wish</h2>
+            <button class="btn" id="show-wish-btn">Make Your Wish</button>
+            <div class="wish-container" id="wish-container">
+                <textarea class="wish-input" id="wish-input" placeholder="Write your wish here..."></textarea>
+                <button class="btn" id="wish-btn">Submit!</button>
+                <div class="wish-message" id="wishMessage" style="display: none;"></div>
+            </div>
+        </section>
+        
+        <section class="section" id="music">
+            <h2 class="section-title">The most difficult part for me!! Which songs to choose!!!</h2>
+            <div class="music-player">
+                <div class="song-list">
+                    <div class="song" data-src="tujaanena.mp3" data-lyrics="tujaanena.txt">
+                        <div class="song-icon">🎵</div>
+                        <div class="song-info">
+                            <div class="song-title">Tu Jaane Na</div>
+                            <div class="song-artist"></div>
+                        </div>
+                    </div>
+                    <div class="song" data-src="dance partner.mp3" data-lyrics="dance_partner.txt">
+                        <div class="song-icon">🎵</div>
+                        <div class="song-info">
+                            <div class="song-title">Dance Partner</div>
+                            <div class="song-artist"></div>
+                        </div>
+                    </div>
+                    <div class="song" data-src="ytkk.mp3" data-lyrics="ytkk.txt">
+                        <div class="song-icon">🎵</div>
+                        <div class="song-info">
+                            <div class="song-title">Yea Tune Kya Kiya</div>
+                            <div class="song-artist"></div>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio-player"></audio>
+                <div class="audio-controls">
+                    <button class="audio-btn" id="play-btn">▶</button>
+                    <button class="audio-btn" id="pause-btn">⏸</button>
+                    <button class="audio-btn" id="stop-btn">⏹</button>
+                    <button class="audio-btn" id="vol-up-btn">🔊</button>
+                    <button class="audio-btn" id="vol-down-btn">🔉</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="flowers">
+            <h2 class="section-title">Flowersss</h2>
+
+            <div style="text-align: center;">
+            <a href="flowers.html" class="flowerbtn">Surprise!!!!</a>
+            </div>
+        </section>
+
+    </div>
+
+        <div id="lyrics-box" class="lyrics-box hidden">
+  <pre id="lyrics-text">Loading...</pre>
+</div>
+        <footer>
+            Made with ❤️
+        </footer>
+    </div>
+<script type="module" src="scriptintegrate.js"></script>
 </body>
 </html>
