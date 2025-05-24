@@ -349,7 +349,7 @@ function createConfetti(element, count = 30) {
 }
 
 // Countdown
-const countdownTarget = new Date("May 24, " + new Date().getFullYear() + " 23:07:00").getTime();
+const countdownTarget = new Date("May 24, " + new Date().getFullYear() + " 23:15:00").getTime();
 const timerElement = document.getElementById("timer");
 const mainContent = document.getElementById("mainContent");
 
